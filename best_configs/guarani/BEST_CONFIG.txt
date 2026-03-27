@@ -1,0 +1,8 @@
+GUARANÍ SUBMISSION CONFIG
+=========================
+VLM: Qwen/Qwen3-VL-8B-Instruct (4bit quantization)
+Prompt: cultural v2 (see prompt.txt)
+MT model: runs/mbart_es_gn_v3_augmented
+Training data: 53K (AmericasNLP 2023 + MultiScript30K) + 50 dev pairs
+Beam search: 4 (or best from sweep above)
+Dev ChrF++: 21.73 (with caveat: 50 dev pairs in training)

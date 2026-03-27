@@ -1,0 +1,6 @@
+GUARANI BEST CONFIG (ChrF++ = 21.00 on dev)
+============================================
+VLM: Qwen/Qwen3-VL-8B-Instruct (4bit)
+Prompt: prompt.txt (cultural v2)
+MT model: runs/mbart_es_gn (old model, 53K training pairs)
+Beam search: 4

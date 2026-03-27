@@ -1,0 +1,90 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+env/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+*.ipynb
+
+# =========================
+# Logs
+# =========================
+*.log
+*.out
+*.err
+anlp_*.out
+anlp_*.err
+slurm-*.out
+slurm-*.err
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+.vscode/
+.idea/
+
+# =========================
+# Training / Experiments
+# =========================
+runs/
+outputs/
+checkpoints/
+models/
+cache/
+tmp/
+temp/
+
+# =========================
+# Large model files
+# =========================
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.safetensors
+*.onnx
+*.h5
+*.pkl
+*.joblib
+
+# =========================
+# Data (CRITICAL)
+# =========================
+data/
+datasets/
+raw_data/
+processed_data/
+downloads/
+
+americasnlp2026/
+americasnlp-2023-sheffield/
+
+# =========================
+# Generated artifacts
+# =========================
+*_generated_captions.txt
+submission*.pt
+submission*.csv
+submission*.json
+submission*.txt
+
+# =========================
+# HF / Torch cache
+# =========================
+.huggingface/
+.cache/
+wandb/
+
+# =========================
+# Misc
+# =========================
+repo_file_tree.txt
