@@ -17,7 +17,7 @@
 | Apr 1, 2025 | Surprise languages | ⏳ Check repo |
 | Apr 20, 2025 | Test sets released | ⏳ |
 | May 1, 2025 | **Submission deadline** | 🎯 |
-| Jul 3-4, 2025 | Workshop at ACL 2026 (San Diego) | Paper deadline: Apr 15, 2026 |
+| Jul 3-4, 2025 | Workshop at ACL 2026 (San Diego) | Paper deadline: |
 
 **UPDATE:** Dev set CAN be used for training (per repo README).
 
