@@ -58,9 +58,9 @@ americasnlp2026_project/
     └── setup_hipergator.sh      # HiPerGator SLURM setup
 ```
 
-## Execution Plan (Side Project ~15-20 hrs total)
+## Working Execution Plan
 
-### Phase 0: Setup (2 hrs) — Week of Mar 24
+### Phase 0: Setup— Week of Mar 24
 - [ ] Clone challenge repo, download all data (pilot + dev for all 4 languages)
 - [ ] Set up HiPerGator environment (conda env, dependencies)
 - [ ] Verify L4 GPU compatibility with PyTorch + transformers
@@ -105,7 +105,6 @@ americasnlp2026_project/
 See detailed analysis in the code files below.
 
 
-cat << 'EOF' > README.md
 # AmericasNLP 2026 Baseline Reproduction
 
 This repository contains our code for the AmericasNLP 2026 Shared Task on Cultural Image Captioning for Indigenous Languages.
