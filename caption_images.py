@@ -21,7 +21,7 @@ Usage:
         --quantize 4bit
 """
 from __future__ import annotations
-
+import re
 import argparse
 import json
 import logging
@@ -130,7 +130,63 @@ def read_prompt(language: str, prompt_file: Optional[str]) -> str:
             return f.read().strip()
     return PROMPTS.get(language.lower(), PROMPTS["generic"])
 
+def clean_caption_text(text: str) -> str:
+    text = (text or "").strip()
+    text = re.sub(r"^(¡Claro!|Aquí tienes.*?:)\s*", "", text, flags=re.I)
+    text = re.sub(r"\s+", " ", text).strip()
+    parts = re.split(r"(?<=[.!?])\s+", text)
+    parts = [p.strip() for p in parts if p.strip()]
+    return " ".join(parts[:2]).strip()
 
+
+BAD_VAGUE_TERMS = [
+    "parece", "probablemente", "podría", "tal vez", "quizá",
+    "hermosa escena", "tradicional escena", "cultura vibrante",
+    "evoca", "simboliza", "representa", "posiblemente",
+    "probablemente en", "podría ser", "como si fuera",
+]
+
+BAD_LOCATION_TERMS = [
+    "mercado 4", "mercado de las yuyos", "plaza 25 de mayo", "plaza 25 de abril",
+    "caacupé", "corrientes", "concepción", "ybyty curupay",
+    "parque 12 de octubre", "parque 3 de febrero",
+]
+
+VISIBLE_OBJECT_TERMS = [
+    "persona", "hombre", "mujer", "niño", "niña",
+    "mesa", "silla", "plato", "vaso", "taza", "pan",
+    "flor", "árbol", "pájaro", "sombrero", "vestido",
+    "cesta", "madera", "barro", "tejido", "escultura",
+    "casa", "choza", "fuego", "calle", "mercado",
+]
+
+def score_caption_candidate(text: str) -> tuple:
+    t = text.lower().strip()
+    words = t.split()
+    length_words = len(words)
+    sentence_count = max(1, len(re.findall(r"[.!?]", t)))
+
+    vague_hits = sum(1 for w in BAD_VAGUE_TERMS if w in t)
+    location_hits = sum(1 for w in BAD_LOCATION_TERMS if w in t)
+    visible_hits = sum(1 for w in VISIBLE_OBJECT_TERMS if w in t)
+
+    score = 0.0
+    score += 1.25 * visible_hits
+    score -= 2.5 * vague_hits
+    score -= 4.0 * location_hits
+    score -= 0.30 * max(0, length_words - 32)
+
+    if sentence_count > 2:
+        score -= 2.0 * (sentence_count - 2)
+
+    return (score, -length_words)
+
+def debug_candidate_scores(candidates: List[str]) -> List[tuple]:
+    scored = []
+    for c in candidates:
+        scored.append((score_caption_candidate(c), c))
+    scored.sort(reverse=True)
+    return scored
 # ---------------------------------------------------------------------------
 # Image path resolution
 # ---------------------------------------------------------------------------
@@ -267,6 +323,9 @@ def load_model_and_processor(model_name: str, quantize: Optional[str] = None):
 
     processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
     model = AutoModelForImageTextToText.from_pretrained(model_name, **load_kwargs)
+    for attr in ["temperature", "top_p", "top_k"]:
+        if hasattr(model.generation_config, attr):
+            setattr(model.generation_config, attr, None)
 
     return model, processor, device
 
@@ -281,8 +340,10 @@ def generate_caption(
     image: Image.Image,
     prompt: str,
     device: str,
-    max_new_tokens: int = 80,
-) -> str:
+    max_new_tokens: int = 96,
+    num_beams: int = 6,
+    num_return_sequences: int = 1,
+) -> List[str]:
     import torch
 
     messages = [
@@ -310,23 +371,28 @@ def generate_caption(
     with torch.no_grad():
         generated_ids = model.generate(
             **inputs,
-            max_new_tokens=max_new_tokens,
             do_sample=False,
+            num_beams=num_beams,
+            num_return_sequences=num_return_sequences,
+            max_new_tokens=max_new_tokens,
+            no_repeat_ngram_size=3,
+            repetition_penalty=1.1,
+            length_penalty=0.9,
         )
 
+    # Remove prompt tokens
     # Remove prompt tokens
     input_len = inputs["input_ids"].shape[1]
     generated_only = generated_ids[:, input_len:]
 
-    output_text = processor.batch_decode(
+    output_texts = processor.batch_decode(
         generated_only,
         skip_special_tokens=True,
         clean_up_tokenization_spaces=True,
-    )[0].strip()
+    )
 
-    # Collapse whitespace and newlines
-    output_text = " ".join(output_text.split())
-    return output_text
+    output_texts = [" ".join(x.split()).strip() for x in output_texts]
+    return output_texts
 
 
 # ---------------------------------------------------------------------------
@@ -356,12 +422,14 @@ def parse_args() -> argparse.Namespace:
                         help="Optional plain text output (one caption per line).")
     parser.add_argument("--caption-field", default="caption_es",
                         help="Field name to store generated Spanish caption.")
-    parser.add_argument("--max-new-tokens", type=int, default=80)
+    parser.add_argument("--max-new-tokens", type=int, default=96)
     parser.add_argument("--quantize", choices=["4bit", "8bit"], default=None,
                         help="Quantization for limited GPU memory (L4: use 4bit).")
     parser.add_argument("--limit", type=int, default=None,
                         help="Process only first N rows (for debugging).")
     parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--num-beams", type=int, default=6)
+    parser.add_argument("--num-return-sequences", type=int, default=1)
     return parser.parse_args()
 
 
@@ -387,6 +455,7 @@ def main() -> None:
     errors: List[str] = []
 
     for i, row in enumerate(tqdm(rows, desc="Captioning")):
+        candidates = []
         try:
             image_key = infer_image_key(row, args.image_field)
             raw_image_path = row[image_key]
@@ -397,14 +466,23 @@ def main() -> None:
             )
 
             image = Image.open(image_path).convert("RGB")
-            caption = generate_caption(
+            candidates = generate_caption(
                 model=model,
                 processor=processor,
                 image=image,
                 prompt=prompt,
                 device=device,
                 max_new_tokens=args.max_new_tokens,
+                num_beams=args.num_beams,
+                num_return_sequences=args.num_return_sequences,
             )
+            raw_candidates = list(candidates)
+            if i < 5:
+                LOGGER.info("Row %d raw candidates: %s", i, candidates)
+
+            candidates = [x.strip() for x in candidates if x.strip()]
+            caption = candidates[0] if candidates else ""
+                    
         except Exception as e:
             LOGGER.error("Failed on row %d: %s", i, e)
             caption = ""
@@ -412,6 +490,7 @@ def main() -> None:
 
         new_row = dict(row)
         new_row[args.caption_field] = caption
+        new_row["caption_candidates_es"] = candidates if caption else []
         captioned_rows.append(new_row)
         caption_lines.append(caption)
 

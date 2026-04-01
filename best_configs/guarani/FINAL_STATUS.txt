@@ -1,0 +1,64 @@
+GUARANÍ — STATUS AS OF 2025-03-27
+==================================
+
+BEST DEV SCORE: ChrF++ = 22.39
+
+Pipeline:
+  VLM:    Qwen/Qwen3-VL-8B-Instruct (4bit)
+  Prompt: prompt_v2.txt (cultural v2)
+  MT:     runs/mbart_es_gn_v3_augmented
+  Beams:  6
+
+Training data for MT:
+  53,083 pairs (AmericasNLP 2023 Guaraní + MultiScript30K)
+  + 50 dev pairs (VLM-generated Spanish + real Guaraní targets)
+  Val: 1,870 pairs
+
+EXPERIMENT LOG:
+  Old model + generic prompt    b=4   20.19  (starting point)
+  Old model + cultural v1       b=4   20.64
+  Old model + cultural v2       b=4   21.00
+  V3aug     + cultural v2       b=4   21.73
+  V3aug     + cultural v2       b=6   22.39  ← BEST
+  V3aug     + vocab v3          b=6   21.54  (worse)
+  V3aug     + few-shot          b=6   21.62  (worse)
+  Qwen2.5-VL-7B + cultural v2        not scored (worse captions)
+  Direct Guaraní generation           6.47   (model can't write Guaraní)
+
+NEXT STEPS:
+  1. When B200 available: run Qwen2.5-VL-72B-Instruct with cultural v2 prompt
+  2. When test sets release (Apr 20): run pipeline on test images
+  3. Submit by May 1
+
+FILES:
+  Prompt:       best_configs/guarani/prompt_v2.txt
+  MT model:     runs/mbart_es_gn_v3_augmented/
+  Dev captions: outputs/guarani_dev_v2/spanish_captions.txt
+  Dev preds:    outputs/guarani_dev_v2/predictions_v3aug_b6.txt
+  Dev refs:     outputs/guarani_dev/references.txt
+
+TEST DAY COMMANDS:
+  export HF_HOME=/blue/daisyw/aashish.dhawan/.cache/huggingface
+  cd /blue/daisyw/aashish.dhawan/americasnlp2026/baseline
+
+  python caption_images.py \
+      --input-jsonl <TEST_JSONL> \
+      --base-path <TEST_IMG_DIR> \
+      --language guarani \
+      --model-name Qwen/Qwen3-VL-8B-Instruct \
+      --prompt-file best_configs/guarani/prompt_v2.txt \
+      --output-txt outputs/guarani_test/spanish.txt \
+      --output-jsonl outputs/guarani_test/captions.jsonl \
+      --quantize 4bit
+
+  python translate_mt.py predict \
+      --language guarani \
+      --model-path runs/mbart_es_gn_v3_augmented \
+      --input-file outputs/guarani_test/spanish.txt \
+      --output-file outputs/guarani_test/predictions.txt \
+      --batch-size 16 --num-beams 6
+
+  python prepare_submission.py \
+      --input-jsonl <TEST_JSONL> \
+      --predictions-file outputs/guarani_test/predictions.txt \
+      --output-jsonl submissions/guarani_v1.jsonl

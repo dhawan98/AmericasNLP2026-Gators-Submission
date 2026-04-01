@@ -88,3 +88,22 @@ wandb/
 # Misc
 # =========================
 repo_file_tree.txt
+
+# =========================
+# Extra local/dev artifacts
+# =========================
+*.tmp
+*.bak
+nohup.out
+*.swp
+*.swo
+
+# Testing / tooling caches
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Environment files
+.env
+.env.*

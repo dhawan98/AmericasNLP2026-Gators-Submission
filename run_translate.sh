@@ -33,22 +33,27 @@ echo "====================="
 
 python translate_mt.py train \
     --language guarani \
-    --model-name facebook/mbart-large-50 \
+    --model-name facebook/nllb-200-distilled-600M \
     --train-src data/parallel/guarani_augmented/train.es \
     --train-tgt data/parallel/guarani_augmented/train.gn \
     --val-src data/parallel/guarani_augmented/val.es \
     --val-tgt data/parallel/guarani_augmented/val.gn \
-    --output-dir runs/mbart_es_gn_v3_augmented \
+    --output-dir runs/nllb_es_gn_v1_augmented_nols \
     --fp16 \
     --train-batch-size 2 \
+    --eval-batch-size 8 \
     --gradient-accumulation-steps 16 \
     --num-train-epochs 10 \
     --eval-steps 500 \
     --save-steps 500 \
+    --logging-steps 100 \
     --warmup-steps 400 \
     --learning-rate 3e-5 \
-    --label-smoothing-factor 0.2 \
+    --weight-decay 0.01 \
+    --label-smoothing-factor 0.0 \
     --metric-for-best-model chrfpp \
     --early-stopping-patience 5 \
     --generation-num-beams 1 \
+    --generation-max-length 128 \
+    --save-total-limit 2 \
     --seed 42

@@ -1,8 +1,24 @@
-GUARANÍ SUBMISSION CONFIG
-=========================
-VLM: Qwen/Qwen3-VL-8B-Instruct (4bit quantization)
-Prompt: cultural v2 (see prompt.txt)
-MT model: runs/mbart_es_gn_v3_augmented
-Training data: 53K (AmericasNLP 2023 + MultiScript30K) + 50 dev pairs
-Beam search: 4 (or best from sweep above)
-Dev ChrF++: 21.73 (with caveat: 50 dev pairs in training)
+GUARANÍ BEST SUBMISSION CONFIG
+==============================
+Dev ChrF++: 22.39
+
+Pipeline:
+  1. VLM: Qwen/Qwen3-VL-8B-Instruct --quantize 4bit
+     Prompt: cultural v2 (see prompt_v2.txt)
+  2. MT:  runs/mbart_es_gn_v3_augmented
+     Training: 53K (AmericasNLP2023 + MultiScript30K) + 50 dev pairs
+     Beams: 6
+
+Note: 50 dev pairs included in MT training, so dev score is optimistic.
+Real test performance will be lower but the config is our best.
+
+Test day command:
+  python caption_images.py --input-jsonl TEST.jsonl --base-path TEST_DIR \
+      --language guarani --model-name Qwen/Qwen3-VL-8B-Instruct \
+      --prompt-file best_configs/guarani/prompt_v2.txt \
+      --output-txt outputs/guarani_test/spanish.txt --quantize 4bit
+  python translate_mt.py predict --language guarani \
+      --model-path runs/mbart_es_gn_v3_augmented \
+      --input-file outputs/guarani_test/spanish.txt \
+      --output-file outputs/guarani_test/predictions.txt \
+      --batch-size 16 --num-beams 6

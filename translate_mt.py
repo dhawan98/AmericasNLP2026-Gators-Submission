@@ -292,14 +292,15 @@ def load_tokenizer_and_model(model_name: str, language: str):
     lang_config = config.get(family, config.get("mbart", {}))
 
     if family == "mbart":
-        tokenizer = MBart50Tokenizer.from_pretrained(model_name, use_fast=False)
-        model = MBartForConditionalGeneration.from_pretrained(model_name)
+        tokenizer = MBart50Tokenizer.from_pretrained(model_path, use_fast=False)
+        model = MBartForConditionalGeneration.from_pretrained(model_path)
     else:
-        tokenizer = AutoTokenizer.from_pretrained(
-            model_name, use_fast=False, trust_remote_code=True
-        )
+        from transformers import NllbTokenizer
+
+        base_model = "facebook/nllb-200-distilled-600M"
+        tokenizer = NllbTokenizer.from_pretrained(base_model)
         model = AutoModelForSeq2SeqLM.from_pretrained(
-            model_name, trust_remote_code=True
+            model_path, trust_remote_code=True
         )
 
     # Set source language
