@@ -2,6 +2,17 @@
 """End-to-end pipeline: Image → Spanish Caption → Indigenous Language Caption → Score.
 
 Usage:
+    # Full pipeline for Guaraní dev set and InternVL VLM
+    python run_pipeline.py \
+        --input-jsonl data/dev/guarani/guarani.jsonl \
+        --base-path data/dev/guarani \
+        --language guarani \
+        --vlm-model OpenGVLab/InternVL3-78B \
+        --mt-model-path models/guarani_mbart50 \
+        --output-dir outputs/guarani \
+        --quantize 8bit
+
+
     # Full pipeline for Guaraní dev set
     python run_pipeline.py \
         --input-jsonl data/dev/guarani/guarani.jsonl \
