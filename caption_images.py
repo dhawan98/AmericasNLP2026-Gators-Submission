@@ -2,6 +2,15 @@
 """Step 1: Caption task images into Spanish using a Vision-Language Model.
 
 Usage:
+    # Basic usage with InternVL3_5 on dev data
+    python caption_images.py \
+        --input-jsonl data/dev/guarani/guarani.jsonl \
+        --base-path data/dev/guarani \
+        --language guarani \
+        --model-name OpenGVLab/InternVL3_5-8B \
+        --output-jsonl outputs/guarani/captions.jsonl \
+        --output-txt outputs/guarani/spanish_captions.txt
+
     # Basic usage with Qwen3-VL on dev data
     python caption_images.py \
         --input-jsonl data/dev/guarani/guarani.jsonl \
@@ -295,7 +304,7 @@ def load_model_and_processor(model_name: str, quantize: Optional[str] = None):
         quantize: None, "4bit", or "8bit" for bitsandbytes quantization
     """
     import torch
-    from transformers import AutoModelForImageTextToText, AutoProcessor
+    from transformers import AutoProcessor
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     LOGGER.info("Using device=%s model=%s quantize=%s", device, model_name, quantize)
@@ -321,14 +330,14 @@ def load_model_and_processor(model_name: str, quantize: Optional[str] = None):
     elif device == "cuda":
         load_kwargs["torch_dtype"] = torch.float16
 
-    if model_name.split('-')[0] == "OpenGVLab/InternVL3":
+    if model_name.split('-')[0] == "OpenGVLab/InternVL3_5":
     	from transformers import AutoTokenizer, AutoModel
 
-    	tokenizer = AutoTokenizer.from_pretrained(path, trust_remote_code=True, use_fast=False)
+    	tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True, use_fast=False)
     	model = AutoModel.from_pretrained(
     	    model_name,
     	    torch_dtype=torch.bfloat16,
-    	    load_in_8bit=True,
+    	    #load_in_8bit=False,
     	    low_cpu_mem_usage=True,
     	    use_flash_attn=True,
     	    trust_remote_code=True).eval().to(device)
@@ -338,6 +347,8 @@ def load_model_and_processor(model_name: str, quantize: Optional[str] = None):
                 setattr(model.generation_config, attr, None)
 
     	return model, tokenizer, device
+
+    from transformers import AutoModelForImageTextToText
 
     processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
     model = AutoModelForImageTextToText.from_pretrained(model_name, **load_kwargs)
@@ -365,15 +376,16 @@ def generate_caption(
 ) -> List[str]:
     import torch
 
-    if model_name.split("-")[0] == "OpenGVLab/InternVL3":
-
-	# The following functions are provided as startup boilerplate with InternVL3 models.
+    if model_name.split('-')[0] == "OpenGVLab/InternVL3_5":
+    	# The following functions are provided as startup boilerplate with InternVL3 models.
     	import math
     	import torchvision.transforms as T
     	from decord import VideoReader, cpu
     	from PIL import Image
     	from torchvision.transforms.functional import InterpolationMode
     	from transformers import AutoModel, AutoTokenizer
+
+    	tokenizer = processor
 
     	IMAGENET_MEAN = (0.485, 0.456, 0.406)
     	IMAGENET_STD = (0.229, 0.224, 0.225)
@@ -441,8 +453,7 @@ def generate_caption(
     	        processed_images.append(thumbnail_img)
     	    return processed_images
 
-    	def load_image(image_file, input_size=448, max_num=12):
-    	    image = image_file
+    	def load_image(image, input_size=448, max_num=12):
     	    transform = build_transform(input_size=input_size)
     	    images = dynamic_preprocess(image, image_size=input_size, use_thumbnail=True, max_num=max_num)
     	    pixel_values = [transform(image) for image in images]
@@ -452,9 +463,9 @@ def generate_caption(
     	# build output
     	pixel_values = load_image(image, max_num=12).to(torch.bfloat16).to(device)
     	generation_config = dict(max_new_tokens=max_new_tokens, do_sample=True)
-    	response = model.chat(processor, None, question, generation_config, history=None, return_history=False)
+    	response = model.chat(tokenizer, pixel_values, f'<image>\n{prompt}', generation_config)
 
-    	return response
+    	return [response]
 
     messages = [
         {
@@ -585,15 +596,22 @@ def main() -> None:
                 max_new_tokens=args.max_new_tokens,
                 num_beams=args.num_beams,
                 num_return_sequences=args.num_return_sequences,
+		model_name = args.model_name
             )
             raw_candidates = list(candidates)
             if i < 5:
                 LOGGER.info("Row %d raw candidates: %s", i, candidates)
 
             candidates = [x.strip() for x in candidates if x.strip()]
+            if i < 2:
+            	print('CANDS')
+            	print(candidates)
             caption = candidates[0] if candidates else ""
                     
         except Exception as e:
+            #Uncomment to see stack traces.
+            #import traceback
+            #print(traceback.format_exc())
             LOGGER.error("Failed on row %d: %s", i, e)
             caption = ""
             errors.append(f"Row {i}: {e}")

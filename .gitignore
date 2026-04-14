@@ -42,6 +42,7 @@ models/
 cache/
 tmp/
 temp/
+src/
 
 # =========================
 # Large model files

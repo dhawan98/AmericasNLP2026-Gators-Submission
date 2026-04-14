@@ -292,8 +292,8 @@ def load_tokenizer_and_model(model_name: str, language: str):
     lang_config = config.get(family, config.get("mbart", {}))
 
     if family == "mbart":
-        tokenizer = MBart50Tokenizer.from_pretrained(model_path, use_fast=False)
-        model = MBartForConditionalGeneration.from_pretrained(model_path)
+        tokenizer = MBart50Tokenizer.from_pretrained(model_name, use_fast=False)
+        model = MBartForConditionalGeneration.from_pretrained(model_name)
     else:
         from transformers import NllbTokenizer
 
