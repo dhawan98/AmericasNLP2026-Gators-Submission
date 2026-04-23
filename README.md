@@ -1,37 +1,161 @@
-# Baseline: Zero-Shot VLM + Machine Translation
+**Visual Captioning for Indigenous Languages**
+University of Florida · Dr. Daisy Zhe Wang's Lab
 
-This folder contains the initial baseline system for the **AmericasNLP 2026 Shared Task on Cultural Image Captioning for Indigenous Languages**.
+## Overview
 
-**[Open the notebook in Google Colab](https://colab.research.google.com/drive/1fexxQ2RPeQcetl_34i52l7BcFBqN_fqW?usp=sharing)**
+System submitted by **Team Gators** to the [AmericasNLP 2026 Shared Task](https://github.com/AmericasNLP/americasnlp2026) on visual captioning for indigenous languages.
 
-## Approach
+**Task:** Given an image, generate a caption in one of 5 indigenous languages.
+**Metric:** chrF++
 
-The baseline follows a two-stage **generate-then-translate** pipeline:
+### Results
 
-1. **Image Captioning in Spanish** — A Vision-Language Model ([Qwen3-VL-8B-Instruct](https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct)) generates a culturally-informed caption in Spanish using a detailed prompt that includes Wixárika cultural context (religious elements, art, ceremonies, material culture, etc.).
-2. **Translation to the Target Language** — The Spanish caption is translated into Wixárika using [Sheffield's winning submission](https://aclanthology.org/2023.americasnlp-1.21/) from the AmericasNLP 2023 Shared Task on Machine Translation into Indigenous Languages.
+| Language | Config | Dev chrF++ | Test Examples |
+|----------|--------|-----------|---------------|
+| Guaraní (grn) | r=80, d=49 | **41.48** | 101 |
+| Maya (yua) | r=0, d=49 | **26.29** | 212 |
+| Nahuatl (nlv) | r=40, d=20 | **25.67** | 200 |
+| Wixarika (hch) | r=40, d=20 | **18.99** | 201 |
+| Bribri (bzd) | r=80, d=20 | **11.50** | 267 |
 
-### Why Spanish as an Intermediate Language?
+---
 
-Existing machine translation resources for Indigenous languages of the Americas are primarily paired with Spanish. Using Spanish as a pivot allows the baseline to leverage available MT systems.
+## Pipeline
+**Stage 1 — VLM Captioning**
+- Model: `Qwen/Qwen3-VL-8B-Instruct` (4-bit quantized, GPU required)
+- Generates a short literal Spanish caption from the image
+- Language-specific prompts in `prompts/`
 
-## Culturally-Informed Prompting
+**Stage 2 — Many-Shot LLM Translation**
+- Model: `gemini-2.5-flash` via Gemini API (CPU only)
+- BM25 retrieval over parallel training corpus (Spanish side)
+- In-context: BM25-retrieved + leave-one-out dev examples
+- Temperature: 0.0
 
-Rather than using a generic captioning prompt, the baseline provides the VLM with rich cultural context about the Wixárika people, including:
+---
 
-- Religious and spiritual elements
-- Traditional art and crafts
-- Material culture
-- Ceremonial practices
+## Setup
 
-As a simple baseline, the cultural context used in the prompt was obtained from the [Wikipedia entry for the Wixárika (Huichol) people](https://es.wikipedia.org/wiki/Huichol). This helps the model generate more culturally appropriate descriptions rather than generic image captions.
+```bash
+git clone https://github.com/dhawan98/AmericasNLP2026.git
+cd AmericasNLP2026
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+export GEMINI_API_KEY="your_key_here"
+```
 
-## Evaluation
+Get task data:
+```bash
+git clone https://github.com/AmericasNLP/americasnlp2026.git
+```
 
-Generated captions are evaluated using **ChrF++**, the primary ranking metric for the shared task, which is convenient since it can be computed automatically without human annotators. This baseline uses ChrF++ to evaluate the generated Wixárika captions against the reference captions in the pilot data. The top 5 systems will additionally undergo human evaluation on adequacy, fluency, faithfulness, and cultural appropriateness to determine the overall winner.
+Parallel corpora (not in repo — available from task organizers):
 
-## Running the Baseline
+| Language | Train pairs |
+|----------|------------|
+| Guaraní | 53,183 (data/parallel/guarani_with_dev/) 30k added from multiscript30k (https://github.com/ufdatastudio/multiscript30k) |
+| Nahuatl | 16,145 (mbart/data/nahuatl-spanish/) |
+| Bribri | 7,508 (mbart/data/bribri-spanish/) |
+| Wixarika | 8,966 (data/parallel/wixarika_with_dev/) |
+| Maya | none — pure few-shot |
 
-The easiest way to run the baseline is through the [Colab notebook](https://colab.research.google.com/drive/1fexxQ2RPeQcetl_34i52l7BcFBqN_fqW?usp=sharing). It handles all setup, including cloning repositories, installing dependencies, and downloading the MT checkpoint. The notebook was run using an A100 GPU.
+---
 
+## Reproduce: End-to-End
+
+### Step 1 — Caption images (GPU required)
+```bash
+python caption_images.py \
+    --input-jsonl  americasnlp2026/data/test/{lang}/{lang}.jsonl \
+    --base-path    americasnlp2026/data/test/{lang} \
+    --language     {lang} \
+    --model-name   Qwen/Qwen3-VL-8B-Instruct \
+    --prompt-file  prompts/{lang}/caption_es_v1.txt \
+    --output-jsonl outputs/{lang}/test_caption_es.jsonl \
+    --output-txt   outputs/{lang}/test_clean_spanish.txt \
+    --quantize 4bit
+```
+
+### Step 2 — Translate captions (best configs)
+```bash
+bash run_test_submissions.sh --language guarani   # r=80 d=49
+bash run_test_submissions.sh --language maya      # r=0  d=49
+bash run_test_submissions.sh --language nahuatl   # r=40 d=20
+bash run_test_submissions.sh --language bribri    # r=80 d=20
+bash run_test_submissions.sh --language wixarika  # r=40 d=20
+```
+
+Or with custom settings:
+```bash
+python translate_llm_manyshot_gemini.py \
+    --language       guarani \
+    --train-src      data/parallel/guarani_with_dev/train.es \
+    --train-tgt      data/parallel/guarani_with_dev/train.gn \
+    --input-spanish  outputs/guarani/test_clean_spanish.txt \
+    --output-preds   test_submissions/guarani/preds.txt \
+    --model          gemini-2.5-flash \
+    --num-retrieval  80 \
+    --num-dev-examples 49 \
+    --dev-example-spanish outputs/guarani/dev_caption_es_v1.txt \
+    --dev-example-refs    outputs/guarani/dev_references.txt \
+    --temperature    0.0
+```
+
+### Step 3 — Format for submission
+```bash
+python prepare_submission.py \
+    --input-jsonl      americasnlp2026/data/test/{lang}/{lang}.jsonl \
+    --predictions-file test_submissions/{lang}/preds.txt \
+    --output-jsonl     test_submissions/{lang}/submission_{lang}.jsonl \
+    --team-name "gators" --version 1
+```
+
+### Step 4 — Evaluate on dev
+```bash
+python score_outputs.py \
+    --predictions outputs/{lang}/preds.txt \
+    --references  outputs/{lang}/dev_references.txt
+```
+
+---
+## Hyperparameter Tuning
+
+```bash
+bash run_improvements_v2.sh --language nahuatl --experiment retrieval-sweep
+```
+
+Key findings:
+- **More retrieval helps** for high-resource languages (Guaraní r=80 >> r=20)
+- **Zero retrieval is best for Maya** — Gemini's pretrained knowledge is sufficient; tiny corpus adds noise
+- **Dev examples matter most** — d=0 drops chrF++ by ~9 points across all languages
+- **Temperature 0.0** optimal for all languages at test time
+
+---
+
+## Key Findings
+
+- **LLM >> fine-tuned MT**: Gemini 2.5 Flash many-shot outperforms mBART-50/NLLB by ~20 chrF++ on Guaraní (41.48 vs ~22)
+- **Zero retrieval for Maya**: BM25 over a tiny out-of-domain corpus hurts performance
+- **VLM quality is the bottleneck**: 54% of Guaraní errors are vision-based (hedged language from captioner)
+- **Wixarika corpus mismatch**: Literary training data causes systematic degeneration for visual descriptions
+- **Wixarika caption prompt v2 (cultural glossary) hurts**: -2.58 chrF++ vs v1
+
+## Hardware
+
+- Stage 1: NVIDIA B200 GPU, 4-bit quantization, ~3.5s/image
+- Stage 2: CPU only, Gemini API
+- Cluster: UF HiPerGator
+
+---
+
+## Citation
+
+```bibtex
+@inproceedings{gators-americasnlp2026,
+  title     = {Cascading VLM Captioning and LLM Translation for Indigenous Language Visual Captioning},
+  author    = {Dhawan, Aashish and others},
+  booktitle = {Proceedings of AmericasNLP 2026},
+  year      = {2026}
+}
+```
 
