@@ -1,0 +1,24 @@
+GUARANÍ BEST SUBMISSION CONFIG (updated)
+=========================================
+Dev ChrF++: 22.51
+Pipeline:
+  1. VLM: Qwen/Qwen2.5-VL-72B-Instruct --quantize 4bit
+     Prompt: best_configs/guarani/prompt_v2.txt
+     Beams: 6, max_new_tokens: 96
+  2. MT: runs/mbart_es_gn_v3_augmented
+     Beams: 6, batch_size: 32
+Captions file: outputs/guarani_dev_qwen25vl72b/spanish_captions.txt
+Predictions file: outputs/guarani/72b_promptv2_mbart_preds.txt
+
+Test day command:
+  python caption_images.py --input-jsonl TEST.jsonl --base-path TEST_DIR \
+      --language guarani --model-name Qwen/Qwen2.5-VL-72B-Instruct \
+      --prompt-file best_configs/guarani/prompt_v2.txt \
+      --output-txt outputs/guarani_test/spanish.txt \
+      --output-jsonl outputs/guarani_test/captions.jsonl \
+      --quantize 4bit --num-beams 6 --max-new-tokens 96
+  python translate_mt.py predict --language guarani \
+      --model-path runs/mbart_es_gn_v3_augmented \
+      --input-file outputs/guarani_test/spanish.txt \
+      --output-file outputs/guarani_test/predictions.txt \
+      --batch-size 32 --num-beams 6

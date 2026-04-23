@@ -1,0 +1,17 @@
+{
+  "language": "guarani",
+  "model": "gemini-2.5-flash",
+  "num_retrieval": 80,
+  "num_dev_examples": 49,
+  "use_rerank": false,
+  "temperature": 0.0,
+  "test_caption_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/guarani/test_clean_spanish.txt",
+  "dev_caption_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/guarani/72b_v3_clean_spanish.txt",
+  "dev_reference_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/guarani/dev_references.txt",
+  "train_src": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/data/parallel/guarani_with_dev/train.es",
+  "train_tgt": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/data/parallel/guarani_with_dev/train.gn",
+  "dev_best_chrf": 41.48,
+  "timestamp": "20260423_004937",
+  "submitted_at": "2026-04-23T04:52:38.009719Z",
+  "n_test_examples": 110
+}

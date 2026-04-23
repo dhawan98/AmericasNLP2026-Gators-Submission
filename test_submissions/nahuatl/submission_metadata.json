@@ -1,0 +1,17 @@
+{
+  "language": "nahuatl",
+  "model": "gemini-2.5-flash",
+  "num_retrieval": 40,
+  "num_dev_examples": 20,
+  "use_rerank": false,
+  "temperature": 0.0,
+  "test_caption_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/nahuatl/test_clean_spanish.txt",
+  "dev_caption_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/nahuatl/dev_caption_es_v1.txt",
+  "dev_reference_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/nahuatl/dev_references.txt",
+  "train_src": "/blue/daisyw/aashish.dhawan/mbart/data/nahuatl-spanish/train.es",
+  "train_tgt": "/blue/daisyw/aashish.dhawan/mbart/data/nahuatl-spanish/train.nah",
+  "dev_best_chrf": 25.67,
+  "timestamp": "20260422_231128",
+  "submitted_at": "2026-04-23T03:15:19.272006Z",
+  "n_test_examples": 200
+}

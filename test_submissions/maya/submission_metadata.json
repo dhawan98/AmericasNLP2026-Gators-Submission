@@ -1,0 +1,17 @@
+{
+  "language": "maya",
+  "model": "gemini-2.5-flash",
+  "num_retrieval": 0,
+  "num_dev_examples": 49,
+  "use_rerank": false,
+  "temperature": 0.0,
+  "test_caption_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/maya/test_clean_spanish.txt",
+  "dev_caption_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/maya/dev_caption_es_v1.txt",
+  "dev_reference_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/maya/dev_references.txt",
+  "train_src": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/maya/dummy_train.es",
+  "train_tgt": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/maya/dummy_train.maya",
+  "dev_best_chrf": 26.29,
+  "timestamp": "20260422_231119",
+  "submitted_at": "2026-04-23T03:14:52.344777Z",
+  "n_test_examples": 212
+}

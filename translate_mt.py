@@ -292,15 +292,14 @@ def load_tokenizer_and_model(model_name: str, language: str):
     lang_config = config.get(family, config.get("mbart", {}))
 
     if family == "mbart":
-        tokenizer = MBart50Tokenizer.from_pretrained(model_path, use_fast=False)
-        model = MBartForConditionalGeneration.from_pretrained(model_path)
+        tokenizer = MBart50Tokenizer.from_pretrained(model_name, use_fast=False)
+        model = MBartForConditionalGeneration.from_pretrained(model_name)
     else:
         from transformers import NllbTokenizer
 
-        base_model = "facebook/nllb-200-distilled-600M"
-        tokenizer = NllbTokenizer.from_pretrained(base_model)
+        tokenizer = NllbTokenizer.from_pretrained(model_name)
         model = AutoModelForSeq2SeqLM.from_pretrained(
-            model_path, trust_remote_code=True
+            model_name, trust_remote_code=True
         )
 
     # Set source language
@@ -343,12 +342,19 @@ def tokenize_dataset(dataset, tokenizer, src_max_len: int, tgt_max_len: int):
             max_length=src_max_len,
             truncation=True,
         )
-        labels = tokenizer(
+
+        label_outputs = tokenizer(
             text_target=examples["target_text"],
             max_length=tgt_max_len,
             truncation=True,
         )
-        model_inputs["labels"] = labels["input_ids"]
+
+        model_inputs["labels"] = label_outputs["input_ids"]
+
+        # Safe for both mBART and NLLB
+        model_inputs.pop("decoder_input_ids", None)
+        model_inputs.pop("decoder_attention_mask", None)
+
         return model_inputs
 
     return dataset.map(fn, batched=True, remove_columns=["source_text", "target_text"])
@@ -455,6 +461,19 @@ def _build_trainer(model, training_args, train_dataset, eval_dataset,
                    tokenizer, data_collator, compute_metrics, callbacks):
     from transformers import Seq2SeqTrainer
 
+    class SafeSeq2SeqTrainer(Seq2SeqTrainer):
+        def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+            inputs = dict(inputs)
+
+            # Never let these reach NLLB/M2M100 forward during training
+            inputs.pop("decoder_inputs_embeds", None)
+            inputs.pop("decoder_input_ids", None)
+            inputs.pop("decoder_attention_mask", None)
+
+            outputs = model(**inputs)
+            loss = outputs["loss"] if isinstance(outputs, dict) else outputs.loss
+            return (loss, outputs) if return_outputs else loss
+
     kwargs = {
         "model": model,
         "args": training_args,
@@ -471,7 +490,7 @@ def _build_trainer(model, training_args, train_dataset, eval_dataset,
     elif "tokenizer" in sig.parameters:
         kwargs["tokenizer"] = tokenizer
 
-    return Seq2SeqTrainer(**kwargs)
+    return SafeSeq2SeqTrainer(**kwargs)
 
 
 # ---------------------------------------------------------------------------
@@ -510,12 +529,19 @@ def train_command(args):
                                         args.source_max_length, args.target_max_length)
     tokenized_val = tokenize_dataset(val_dataset, tokenizer,
                                       args.source_max_length, args.target_max_length)
-    data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
+    # data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=model)
+    data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, model=None, label_pad_token_id=-100)
+
 
     training_args = _build_training_args(args, args.output_dir)
 
+    # Clear from model.config (read during forward pass → causes crash)
+    saved_forced_bos = getattr(model.config, 'forced_bos_token_id', None)
+    model.config.forced_bos_token_id = None
+
+    # Set on generation_config (read only during model.generate() → safe)
     if forced_bos_token_id is not None:
-        model.config.forced_bos_token_id = forced_bos_token_id
+        model.generation_config.forced_bos_token_id = forced_bos_token_id
 
     trainer = _build_trainer(
         model=model,
@@ -531,6 +557,9 @@ def train_command(args):
     )
 
     trainer.train()
+    model.config.forced_bos_token_id = forced_bos_token_id if forced_bos_token_id is not None else saved_forced_bos
+
+    
     trainer.save_model(args.output_dir)
     tokenizer.save_pretrained(args.output_dir)
 

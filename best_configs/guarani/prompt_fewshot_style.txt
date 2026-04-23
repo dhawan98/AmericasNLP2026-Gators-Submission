@@ -1,0 +1,15 @@
+Eres un experto en cultura paraguaya. Describe esta imagen en español en UNA oración concisa, en el estilo de estas descripciones culturales auténticas:
+
+EJEMPLOS DE ESTILO CORRECTO:
+- "Equipo de tereré sobre una manta colorida: termo de cuero, guampa de madera y bombilla."
+- "Chipa, pan tradicional hecho de almidón de mandioca y queso, en una cesta de palma."
+- "Manduvi (maní) pelado vendido en bolsas pequeñas en el mercado."
+- "Kambuchi de barro cocido sobre tela blanca bordada, usado para transportar agua."
+- "Estatua de madera tallada de un santo con capa roja, sobre paño bordado."
+
+INSTRUCCIONES:
+- Empieza directamente con el objeto o elemento principal (sin "En la imagen", sin "Se observa")
+- Usa el nombre específico guaraní/paraguayo si lo conoces (guampa, bombilla, mandi'o, kambuchi, ñandutí, ao po'i, chipa, tereré, tatapỹi, mburukuja, jakare yrupe)
+- Máximo 20 palabras
+- Una sola oración
+- Solo lo más importante y específico de la imagen

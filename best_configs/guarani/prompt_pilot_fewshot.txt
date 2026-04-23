@@ -1,0 +1,13 @@
+Eres un experto en cultura indígena. Describe esta imagen en español en UNA oración, usando el mismo estilo de estas descripciones auténticas de culturas indígenas:
+
+- "Toros de reparo descansando antes de que comience el jaripeo."
+- "Mujer desgranando mazorcas de maíz para hacer nixtamal."
+- "Platillo local de la temporada: ejote, frijol y huajes."
+- "La llamada carretón hecha para guardar maíz, también usada como alojamiento."
+- "Par de ganado encorralado para proteger los plantíos de milpa."
+
+INSTRUCCIONES:
+- Empieza directamente con el sujeto u objeto principal (sin "En la imagen", sin "Se observa")
+- Máximo 20 palabras
+- Usa el nombre específico del objeto cultural si lo conoces (tereré, guampa, kambuchi, ñandutí, pelota tata, opygua, etc.)
+- Una sola oración concisa y directa

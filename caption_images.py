@@ -75,6 +75,13 @@ PROMPTS: Dict[str, str] = {
         "Si hay elementos culturales mayas visibles (ruinas, pirámides, glifos, bordados, "
         "huipil, milpa, hamacas, cenotes), menciónalos solo si son claramente visibles."
     ),
+    "nahuatl": (
+        "Escribe UNA sola leyenda breve en español para esta imagen (2-3 oraciones máximo). "
+        "Sé literal y concreto. Describe solo lo visible: personas, objetos, ropa, acción y entorno. "
+        "Si hay elementos culturales nahuas visibles (textiles, bordados, mercado, cerámica, "
+        "iglesia, danza, instrumentos, maíz, metate, comal, arquitectura comunitaria), "
+        "menciónalos solo si son claramente visibles. No especules."
+    ),
 }
 
 # Fields where the image path might be stored in different JSONL formats
@@ -257,7 +264,7 @@ def resolve_image_path(
 
     # Language subdirs
     if base is not None:
-        for lang_dir in ["guarani", "wixarika", "bribri", "maya", "yucatec_maya"]:
+        for lang_dir in ["guarani", "wixarika", "bribri", "maya", "yucatec_maya", "nahuatl"]:
             candidates.append((base / lang_dir / "images" / basename).resolve())
             candidates.append((base / lang_dir / basename).resolve())
 
@@ -393,7 +400,74 @@ def generate_caption(
 
     output_texts = [" ".join(x.split()).strip() for x in output_texts]
     return output_texts
+def verify_caption(
+    model,
+    processor,
+    image: Image.Image,
+    caption: str,
+    device: str,
+    max_new_tokens: int = 64,
+) -> str:
+    import torch
 
+    verify_prompt = f"""
+Analiza esta imagen y la siguiente descripción en español.
+
+Indica si la descripción contiene detalles que NO están claramente sustentados por la imagen.
+
+Responde SOLO con una de estas dos opciones:
+OK
+o
+UNSUPPORTED: <lista breve de palabras o frases no sustentadas>
+
+Descripción:
+{caption}
+""".strip()
+
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {"type": "image", "image": image},
+                {"type": "text", "text": verify_prompt},
+            ],
+        }
+    ]
+
+    text = processor.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True
+    )
+
+    inputs = processor(text=[text], images=[image], return_tensors="pt")
+
+    if device == "cuda":
+        inputs = {
+            k: v.to(model.device) if hasattr(v, "to") else v
+            for k, v in inputs.items()
+        }
+
+    with torch.no_grad():
+        generated_ids = model.generate(
+            **inputs,
+            do_sample=False,
+            num_beams=1,
+            num_return_sequences=1,
+            max_new_tokens=max_new_tokens,
+        )
+
+    input_len = inputs["input_ids"].shape[1]
+    generated_only = generated_ids[:, input_len:]
+
+    out = processor.batch_decode(
+        generated_only,
+        skip_special_tokens=True,
+        clean_up_tokenization_spaces=True,
+    )[0].strip()
+
+    return " ".join(out.split())
+
+def make_literal_fallback_prompt(original_prompt: str) -> str:
+    return original_prompt + "\n\nMUY IMPORTANTE:\n- Describe solo objetos, personas, acciones y entorno claramente visibles.\n- No nombres lugares, monumentos, santos, especies, comidas o artefactos específicos si no estás completamente seguro.\n- Si dudas, usa una descripción visual general."
 
 # ---------------------------------------------------------------------------
 # CLI
@@ -466,7 +540,7 @@ def main() -> None:
             )
 
             image = Image.open(image_path).convert("RGB")
-            candidates = generate_caption(
+            raw_candidates = generate_caption(
                 model=model,
                 processor=processor,
                 image=image,
@@ -476,12 +550,36 @@ def main() -> None:
                 num_beams=args.num_beams,
                 num_return_sequences=args.num_return_sequences,
             )
-            raw_candidates = list(candidates)
             if i < 5:
-                LOGGER.info("Row %d raw candidates: %s", i, candidates)
+                LOGGER.info("Row %d raw candidates: %s", i, raw_candidates)
 
-            candidates = [x.strip() for x in candidates if x.strip()]
+            candidates = [x.strip() for x in raw_candidates if x.strip()]
             caption = candidates[0] if candidates else ""
+
+            if caption:
+                verification = verify_caption(
+                    model=model,
+                    processor=processor,
+                    image=image,
+                    caption=caption,
+                    device=device,
+                )
+                if verification.startswith("UNSUPPORTED:"):
+                    fallback_prompt = make_literal_fallback_prompt(prompt)
+                    fallback_candidates = generate_caption(
+                        model=model,
+                        processor=processor,
+                        image=image,
+                        prompt=fallback_prompt,
+                        device=device,
+                        max_new_tokens=args.max_new_tokens,
+                        num_beams=args.num_beams,
+                        num_return_sequences=1,
+                    )
+                    fallback_candidates = [x.strip() for x in fallback_candidates if x.strip()]
+                    if fallback_candidates:
+                        caption = fallback_candidates[0]
+                        candidates[0] = caption
                     
         except Exception as e:
             LOGGER.error("Failed on row %d: %s", i, e)

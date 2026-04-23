@@ -55,8 +55,9 @@ def parse_args():
                         help="Output submission JSONL.")
     parser.add_argument("--id-field", default="id",
                         help="ID field in input JSONL.")
-    parser.add_argument("--caption-field", default="generated_caption",
+    parser.add_argument("--caption-field", default="predicted_caption",
                         help="Field name for generated caption in output.")
+    
     parser.add_argument("--team-name", default="LSU-MR-Lab")
     parser.add_argument("--version", type=int, default=1)
     parser.add_argument("--log-level", default="INFO")
@@ -79,10 +80,8 @@ def main():
 
     with open(args.output_jsonl, "w", encoding="utf-8") as f:
         for row, pred in zip(rows, predictions):
-            entry = {
-                args.id_field: row.get(args.id_field, ""),
-                args.caption_field: pred.strip(),
-            }
+            entry = dict(row)
+            entry[args.caption_field] = pred.strip()
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
     LOGGER.info(

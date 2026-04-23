@@ -1,109 +1,54 @@
-# =========================
-# Python
-# =========================
-__pycache__/
-*.py[cod]
-*.so
+# Virtual environment
 .venv/
-venv/
-env/
 
-# =========================
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
 # Jupyter
-# =========================
 .ipynb_checkpoints/
 *.ipynb
 
-# =========================
-# Logs
-# =========================
-*.log
-*.out
-*.err
-anlp_*.out
-anlp_*.err
-slurm-*.out
-slurm-*.err
+# Large dev runs
+dev_experiments/
 
-# =========================
-# OS / Editor
-# =========================
+# Old sheffield baseline
+americasnlp-2023-sheffield/
+
+# Data directories (too large / has own repo — see README for download)
+data/
+americasnlp2026/
+
+# Intermediate outputs
+outputs/
+
+# Raw API response files
+test_submissions/*/raw.jsonl
+test_submissions/*/samples.tsv
+test_submissions/*/*_original.txt
+test_submissions/*/*_deduped.txt
+
+# Old submission dirs
+submissions/
+
+# Environment / secrets
+.env
+.env.*
+*.key
+
+# OS / editor
 .DS_Store
 .vscode/
 .idea/
 
-# =========================
-# Training / Experiments
-# =========================
-runs/
-outputs/
-checkpoints/
-models/
-cache/
-tmp/
-temp/
+# Slurm logs
+*.out
+*.err
+slurm-*.out
 
-# =========================
-# Large model files
-# =========================
+# Large model weights
+*.bin
 *.pt
 *.pth
 *.ckpt
-*.bin
-*.safetensors
-*.onnx
-*.h5
-*.pkl
-*.joblib
-
-# =========================
-# Data (CRITICAL)
-# =========================
-data/
-datasets/
-raw_data/
-processed_data/
-downloads/
-
-americasnlp2026/
-americasnlp-2023-sheffield/
-
-# =========================
-# Generated artifacts
-# =========================
-*_generated_captions.txt
-submission*.pt
-submission*.csv
-submission*.json
-submission*.txt
-
-# =========================
-# HF / Torch cache
-# =========================
-.huggingface/
-.cache/
-wandb/
-
-# =========================
-# Misc
-# =========================
-repo_file_tree.txt
-
-# =========================
-# Extra local/dev artifacts
-# =========================
-*.tmp
-*.bak
-nohup.out
-*.swp
-*.swo
-
-# Testing / tooling caches
-.pytest_cache/
-.mypy_cache/
-.coverage
-htmlcov/
-
-# Environment files
-.env
-.env.*

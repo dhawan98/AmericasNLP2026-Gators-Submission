@@ -1,0 +1,17 @@
+{
+  "language": "bribri",
+  "model": "gemini-2.5-flash",
+  "num_retrieval": 80,
+  "num_dev_examples": 20,
+  "use_rerank": false,
+  "temperature": 0.0,
+  "test_caption_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/bribri/test_clean_spanish.txt",
+  "dev_caption_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/bribri/dev_caption_es_v1.txt",
+  "dev_reference_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/bribri/dev_references.txt",
+  "train_src": "/blue/daisyw/aashish.dhawan/mbart/data/bribri-spanish/train.es",
+  "train_tgt": "/blue/daisyw/aashish.dhawan/mbart/data/bribri-spanish/train.bzd",
+  "dev_best_chrf": 11.5,
+  "timestamp": "20260422_231747",
+  "submitted_at": "2026-04-23T03:23:24.065910Z",
+  "n_test_examples": 267
+}

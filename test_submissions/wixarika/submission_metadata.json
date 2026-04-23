@@ -1,0 +1,17 @@
+{
+  "language": "wixarika",
+  "model": "gemini-2.5-flash",
+  "num_retrieval": 40,
+  "num_dev_examples": 20,
+  "use_rerank": false,
+  "temperature": 0.0,
+  "test_caption_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/wixarika/test_clean_spanish.txt",
+  "dev_caption_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/wixarika/dev_caption_es_v1.txt",
+  "dev_reference_file": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/outputs/wixarika/dev_references.txt",
+  "train_src": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/data/parallel/wixarika_with_dev/train.es",
+  "train_tgt": "/blue/daisyw/aashish.dhawan/americasnlp2026/baseline/data/parallel/wixarika_with_dev/train.hch",
+  "dev_best_chrf": 18.99,
+  "timestamp": "20260422_234850",
+  "submitted_at": "2026-04-23T03:52:42.616798Z",
+  "n_test_examples": 201
+}
