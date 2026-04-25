@@ -1,5 +1,5 @@
 **Visual Captioning for Indigenous Languages**
-University of Florida · Dr. Daisy Zhe Wang's Lab
+University of Florida · DSR Lab (Dr. Daisy Zhe Wang) · UF Data Studio (Dr. Grant)
 
 ## Overview
 
