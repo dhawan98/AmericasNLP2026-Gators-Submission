@@ -152,7 +152,8 @@ Key findings:
 
 ```bibtex
 @inproceedings{gators-americasnlp2026,
-  title     = {Cascading VLM Captioning and LLM Translation for Indigenous Language Visual Captioning},
+  title     = {Retrieval-Augmented Long-Context Translation for Cultural Image
+Captioning: Gators submission for AmericasNLP 2026 shared task},
   author    = {Dhawan, Aashish and others},
   booktitle = {Proceedings of AmericasNLP 2026},
   year      = {2026}
