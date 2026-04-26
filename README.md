@@ -147,16 +147,5 @@ Key findings:
 - Cluster: UF HiPerGator
 
 ---
-
-## Citation
-
-```bibtex
-@inproceedings{gators-americasnlp2026,
-  title     = {Retrieval-Augmented Long-Context Translation for Cultural Image
-Captioning: Gators submission for AmericasNLP 2026 shared task},
-  author    = {Dhawan, Aashish and others},
-  booktitle = {Proceedings of AmericasNLP 2026},
-  year      = {2026}
-}
 ```
 
