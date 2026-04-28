@@ -1,0 +1,51 @@
+id	prediction	reference	chrfpp_sentence
+0	Le miiso' te chilikbal yookol le k'áanche'o'.	Juntúul miis ku weenel	10.0435
+1	Le lela' junp'éel ju'un tu'ux ku ts'íibta'al bix u t'aan maaya.	Junp'éel áanalte' ich maaya t'aan.	31.3442
+2	Óoxp'éel máako'ob táan u xooko'ob yéetel computadora.	Oxtúul máak tu táan junp'éel computadora.	44.8283
+3	Jump'éel éek' k'at yéetel u ja'il k'aax.	Junp'éel boox nu'ukul uti'al u uk'ul café.	15.9543
+4	K'abnal ku ts'u'uts'ik u k'áak'il u yóok'ol u yich k'abnal.	Le lela' tu'ux ku jo'saaj kaab etel  ya'ab buts' etel su'uk kíimen.	13.9053
+5	Junp'éel botella yaan ja'il tu tséel junp'éel puerta.	Le botellao' ja'o tÍ yáan taníil le joolnajo'.	18.7805
+6	Junp'éel naj tu'ux yaan mesa'ob yéetel k'áanche'ob boox, tu tséelile' yaan junp'éel ventana tu'ux ku táaj sáasil.	Le lela' junp'éel sasili' ichil najilxook.	24.0482
+7	Junkúul xa'an yéetel junkúul chak lool yaan tu tséel junp'éel pak' yéetel junp'éel bej.	Le xa'ant ti yaan aktáan le bardao'. Tak xan yano' junp'éel u paak'al ku loolankií.	21.5643
+8	Juntúul chan am ku máan yook'ol pak'.	Le amo' ti yáan lu'ume.	13.6341
+9	Juntúul máak ku k'aaxik junp'éel lool, paachile' ya'akach xa'ano'ob yéetel sáasil ka'anal.	Le lela' jump'eel sakchak' lol.	16.6234
+10	Ya'abach xa'ano'ob ya'ax u le'o'ob, yéetel sak u k'abo'ob, yóok'ole' azul le ka'analo', tu tséelile' yaan junp'éel sáasil.	Le lela' nuk'uch pak'alob ya'axob ts'o'ke núuktakoob.	20.5134
+11	Le lela' junp'éel koot sak yéetel ya'ax u bonil, yaan xan junp'éel cruz ichil.	Junp'éel pak' yaan junp'éel boonil jach ta uts, beyxan yaan tikin su'uk tu pach yaan xan u yoochel juntúul máak.	25.8611
+12	Le xa'an ti yaan aktáan le bardao'.	Junkúul k'áax yaan u loolo'ob de sakchak.	13.6431
+13	Chak kisbuuts' ti' yaan tu táan junp'éel k'an naj.	Junp'éel k'an naj yaan xan ka'ákúul che' táanil beyxan junp'éel chak' kisbuuts'.	38.3273
+14	Le lela' junp'éel pak'al ya'ax, ya'ab u loolo'ob k'an yéetel ya'ax.	Junkúul ché' yaan u lool k'an beyxan jach taj ka'anal.	18.7564
+15	Junkúul put yaan u yich, paachile' ya'akach che'ob yéetel k'áaxo'ob, yóok'ole' ya'ab muñalo'ob.	Junkúul puut jach ya'ab u yich beyxan yaan tu paachil ya'abach u le' ja'as.	33.9646
+16	Junkúul chak lool yaan u le' ya'ax.	Junkúul éek' puk'e'en lool yaan xan tu paach ya'abach ya'ax k'áax jaantaj.	26.3570
+17	Juntúul sak kaax ku janal yook'ol lu'um.	Juntúul sak kaax  táan u tóochik le lu'umo'.	43.8185
+18	Junp'éel che' kulukbal tu táanil junp'éel chak joolnaj.	Junp'éel k'áanche' yaan tu tséel le che'o' beyxan yáan junp'éel pak'  chukwa' tu paach.	23.7471
+19	Junkúul che' yaan u le' ya'ax, tu paachile' yaan xa'an.	Junkúul ya' jach ya'ab u le' beyxan jach ya'ab sínik yaan iknal.	29.1672
+20	Le lela' junp'éel xa'anil naj tu'uxan ya'an junp'éel lona azul, paachile' yáan ya'akach kúul che'ob.	Junp'éel u naj k'áax beyxan yaan tu táanil junkúl che'.	25.8865
+21	Juntúul ko'olel ku meyaj tu yáax k'áax.	Nojoch máak yéetel u huipil de flores jejeláas bonilo'ob, wa'akbal tu tsel U pak'alo'ob.	8.3333
+22	Jump'éel úuchben k'óoben tu'ux ku ts'a'abal k'áak' uti'al u ch'a'abal janal.	Chi' k'aak' yettel nixtamal ti naaj.	14.5644
+23	Chi' k'aak' yéetel k'áax.	Ki'iwaj ku lo'kansaj	7.3886
+24	Le lela' junp'éel plato yaan empanadas, tu tséelile' yaan junp'éel máak ku jantik.	Jump'éel naj tu'ux ku ts'áajal polcanes, yáan nu'ukulo'ob yook'ol mesa, yéetel jump'éel ollia paachil juntúul máak ku k'aaxik jump'éel bolsaa.	18.0504
+25	Juntúul peek' kulukbal ichil junp'éel naj, paachile' ya'akach che'ob yéetel ka'anal.	Jump'éel xa'anil naj tu'uxan juntúul chan míis p'ukukbal chumuk, paachile' sáasil yéetel k'íin, yáan ya'akach kúul che'ob ku wilk'ajab, yéetel xane´muñalo'ob ku mano'ob.	26.4616
+26	Juntúul ko'olel ku k'aaxik tamales.	Máak ku tsiktik kaax yeetel ku patikk tamali'	18.0706
+27	Le pak'o' ya'ab u yich, beyxan yaan ya'abach che'ob tu paach.	Jump'éel solar tu'ux yáan ya'akach kúul che'ob tu pachil, táanile' yáan xiimo'ob ts'u jolo'ochtalo'ob, yóok'ole' yáan bu'ul ku t'i'it'pajal, taanile' yaan jump'éel koot chowak.	14.9184
+28	Juntúul máak ku xíimbal ichil k'áax.	Winik ku xiimbal ti k'aax.	25.3960
+29	Junkúul k'úum yaan u boonil sak yéetel ya'ax.	K'uum ku kajal u tak'antaj yook'ol boox lu'um, tu ba'asche' yáan ya'akach tunicho'ob yéetel k'áaxo'ob.	13.5045
+30	Le lela' ya'abach xíim yaan tu paachil ya'abach che'ob.	Winik wa'akbal yáanal ya'akach che'ob, táanile' óoxp'el kul xiim, yéetel kaanle' azul mina'an muñal ku wilk'ajab.	15.8395
+31	Jump'éel nal ku ch'uyukbal tu k'ab junkúul che', paachile' ya'akach che'ob yéetel azul ka'an.	Xiim ts'ok u jaantal tumen ba'alche'ob, paachile' ya'akach che'ob ya'axtako'ob, mina'an muñal ku man ka'anal.	36.6745
+32	Le che'o' mina'an u le', ba'ale' ya'ab u yich tu tséele' yaan junkuul xa'an.	Sáasil k'íin ku jultik jump'éel chan nido chan ch'iich ch'uyukbal tu kul k'i'ixil che', azul le ka'analo'.	15.3862
+33	Máako'ob wa'akbalo'ob ichil jump'éel iglesia.	U noj najil ku' tuux much'ukbal ya'akach winiko'ob, táanile' jump'éel nok' u bonilo'obe' yáax, sak, yéetel chak, chúumuke' ch'uyukbal banderrillas jejeláas bonilo'ob.	11.2136
+34	Jump'éel tunich yaan yóok'ol ya'abach k'aax, tu paachile' yaan nu'ukulo'ob yéetel jump'éel jool naj.	Kiiwaj maka'an yettel block.	13.5279
+35	Juntúul máak ku ts'a'abal u k'ab yóok'ol junp'éel che' yéetel ya'ab u le'o'ob.	Winik ku k'aaxik u si' yeetel aak'.	18.9950
+36	Juntúul máak ku kulikbal tu jool naj, táan u pak'ik ka'atúul boox peek'ob, paachile' ya'akach che'ob yéetel jump'éel naj u yóok'ole' de lamina.	Peek'o'b walakbalo'ob jool naj, ichil le najo' yáan wíiniko'ob kulukbalo'ob, paachile' yáan che'ob yéetel jump'éel naj.	46.5860
+37	Juntúul boox peek' chilikbal yook'ol bej, tu tséelile' yaan junkúul che', paachile' jump'éel sak naj.	Chan peek' chilikbaj yook'ol carretera, paachile' yáan ya'akach che'ob yéetel jump'éel chowak koot, tu taamile' yáan jump'éel sak naj.	42.4676
+38	Junp'éel naj k'áax yéetel u janal che'ob, tu tséelile' yaan junp'éel bicicleta, yéetel ya'abach nu'ukulo'ob ch'uyukbalo'ob.	Bicicleta najkunsa' tseel úuchben xa'aninaj.	21.6735
+39	Juntúul ch'íich' kulukbal yóok'ol junp'éel che', tu tséelile' jump'éel k'an caja, tu paachile' juntúul máak yéetel u chak xamach.	Baach u mot'mubal tu weenel tu tsel apagador ichil naj.	18.6166
+40	Juntúul sak miis yéetel boox bonil yaan yóok'ol junp'éel che', tu paachile' yaan junp'éel naj.	Chan míis ku máan yook'ol lamina, yóok'ole' junkúul che', tu tséelile' jump'éel cubeta ch'uyukbal, paachile' jump'éel naj u yóok'ole' de lamina.	27.7023
+41	Máak ku ts'a'abal bu'ul ichil ch'uuy.	Juntúul máak ku xiixtik sak ibo'ob.	15.3957
+42	Juntúul miis ku p'ukukbal yook'ol jump'éel koot, tu paachile' yáan jump'éel che' koot.	Le miiso' te chilikbal yookol le pak'il le najo'.	23.5994
+43	Junp'éel úuchben camión yaan tu tséel junp'éel sak naj, tu paachile' ya'akach che'ob yéetel xa'ano'ob.	Tu tséel le sakchak najo', yaan  junpeel sak kisbuuts' yéetel junkúl xa'an.	32.4391
+44	Junkúul che' mina'an u le' yaan tu táan jump'éel iglesia.	Le che'o' mina'an u le', ba'ale' ya'ab u yich tu tséele' yaan junkuul xa'an.	34.1586
+45	Junkúul che' mina'an u le', tu tséelile' yaan junkúul ya'ax che'.	Le sakpakalo'obo' ti'  yano'ob tu k'ab le che'o', le cheo' ya'ab u yich.	17.7619
+46	Le lela' junp'éel pepen yaan u boox xik'nal.	Le boox péepen ti' yaan tu k'ab le che'o'.	23.8888
+47	Juntúul sak t'eel yéetel juntúul boox kaax táan u xiimbalo'ob.	Juntúul sak kaax yéetel juntúul book kaax ti ya'ano'ob yaanal le che'o'.	43.7926
+48	Junp'éel boonil tu pak'il naj tu'ux yaan juntúul chan máak yéetel u boox pool, u boonil u nook'e' azul, táan u pak'ik juntúul chan ba'alche' k'an u boonil tu k'ab.	Te boona' ya'an juntúul ch'uup ku yiik biix u taabal le k'áako'.	23.9049
+49	Junkúul che' yaan u lool chak yéetel sakchak, yaan tu tséel le bejo'.	Junkúul sakchak lool yaan yookol le bejo'.	51.2503

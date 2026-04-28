@@ -1,0 +1,51 @@
+id	prediction	reference	chrfpp_sentence
+0	Se ichpochtli ika xonbelo tlachixtok ik tlani, kanin ixtlauak. Tlachipajtok.	Se ichpochtli ika xonbelo tlachixtok ik tlani, kanin ixtlauak. Tlachipajtok.	100.0000
+1	Se tlakatsintli ika xonbelo uan tliliuik tlakemitl moseuijtok ipan se tetl. Itech ima se tlakotl. Ikuitlapan kajki tepeyo.	Se telpochtli moseuijtok ipan se ueyi tetl. Motlakentok ika xonbelo, tliliuik kamisa uan pantalon. Itech ima se tlakotl. Ikuitlapan kajki tepeyo.	64.2303
+2	Se tlakatsintli motlakentok ika iztak kamisa uan pantalon, moseuijtok ipan se iztak silla, tlachixtok ik se tlakatl non tlatlatzintok.	Sekimej nauatekaj kikajtokej se tlapoualistli ika intlajtolkopa.	22.7926
+3	Ome tlakamej motlajtlachialtiaj. Motlakentijtokej ika sejse ialtepetlaken.	Ome telpochmej kimokixtiliaj se foto. Motlakentijtokej ika sejse ialtepetlaken.	61.5559
+4	Sekimej maseualmej non chantij ik Zongolica tlejkoskej ipan kamion.	Sekimej maseualmej non chantij ik Zongolica tlejkoskej ipan kamion.	100.0000
+5	Eyi siuamej motlapouiaj. Motlakentijtokej ika xochitlakemitl.	Eyi siuamej motlapouiaj. Ome motlakentokej ken non chantij Ixhuatlancillo.	48.7420
+6	Se ouamila ika itlatsakuil. Sekitsin tlamixtemik.	Se ouamila ika itlatsakuil. Sekitsin tlamixtemik.	100.0000
+7	Se tlakatsintli kipixtok ima se palankatsin.	Ikaj kipixtok ima se palankatsin non nesi omotlajtlachialti.	50.9748
+8	Se xochitl ika istak ixiujyo uan se nextik itlajko.	Seki Yolitisxochitl uan se ajyoxiuitl.	35.5819
+9	Se xochitl ika xochimej kostikej.	Seki uajxilxochitl tlen yikin kueponij.	20.1148
+10	"Se xochitl tlen kiluiaj ""pitsauaxochitl"" non achtsin youakik."	Se gladiolajxochitl non achtsin youakik.	59.3823
+11	Se kualtsin senpoalxochitl non melajka xochitl.	Se kualtsin senpoalxochitl non melajka xochitl.	100.0000
+12	Se ojtli ika se xochitlakemitl tlen tlakoloua uan katej seki kalmej uan olochkuauitl tlen okintepankej.	Se foto kanin nextok ojtli, tetlala inakastlan uan semi tlamixtentok ken yetoskia totoka tiuaij ipan se karro.	21.4133
+13	Se kiniaxiuitl non amo tikkuaj tlaxochixtok.	Se kiniaxiuitl non amo tikkuaj tlaxochixtok.	100.0000
+14	Se kiniaxiuitl non amo tikkuaj tlaxochixtok.	Se kiniaxochitl ika se tokatl ipan. Nin kiniatl amo tikkuaj.	37.3623
+15	Se tlaltikpak ika se tliltepetl non tlamixtentok.	Se ixtlauaktsintli ika kuajyo uan se kaltsintli. Uejka kajki se tiltepetl itoka Poyaujtekatl.	20.4512
+16	Chikuasen tlakamej uan siuamej tlakualchiuaj. Sekimej kitejteki xonakatl, oksekimej kichiua tsopelikatl, oksekimej kitejteki tsilanko, uan oksekimej kichiua chilmoli.	Tlakamej uan siuamej mopaleuiaj tlakualchiuaj. Se kitejteki xonakatl, okse kichiua tsopelikatl, okse kitejteki tsilanko, uan okome kichiua chilmoli.	77.4389
+17	Se siuatsintli non tlakentok ika xochitlakemitl kitejteki tlakuali ipan se tlapechtli.	Ijtik se kaltsintli, se ichpoka non tlakentok ika xochitlakemitl kitejteki nakatl ipan se tlapechtli.	65.2030
+18	Miakej koamej ika kuanextli uan tliltik ipan kuajyo.	Se xonokuauitl ika xonokuilmej.	20.0964
+19	Ueyi tepeyo tlen amo niman tlami, nesi ik nouian kajki. Tlamixtentok uan san ik toyekma, ajkopa, tlachipauak.	Ueyi tepeyo tlen amo niman tlami, nesi ik nouian kajki. Tlamixtentok uan san ik toyekma, ajkopa, tlachipauak.	100.0000
+20	Se tlakatsintli nemi ipan se ojtli tlen tlalli uan temej, kiyaualojtok kuajyo.	Se siuatsintli nemi ipan se teyo ojtli kanin kuajyo.	53.7418
+21	Se kuauhtlamitl istak, kiyaualojtok se ojtli uan semi tlamixtentok.	Se tepetsintli kiyaualojtok kuautitlamitl uan semi tlamixtentok.	61.0728
+22	Se siuatsintli ika xonbelo uan kamisa kinextia se tlakotl ika se chichiltik xochitl.	Itech se mantajkaltsintli kintetliokolilia tlakuali akinmej uejka uitsej. Nochtin motlakentiaj ika inmialtepetsotsol.	19.7616
+23	Se ixtlauak ika miakej kaltsitsintin, kiyaualojtok tepeyo uan mixtli.	Se ixtlauak ika miakej kaltsitsintin, kiyaualojtok tepeyo uan mixtli.	100.0000
+24	Se kualtsin senpoalxochitl non melajka xochitl.	Se kostik senpoalxochitl.	51.7834
+25	Se matlalxochitl ika makuili ixochiyo uan istak iteyo.	Se matlalxochitl kualtsin uan se non yopitsuakik.	39.3724
+26	Se ameyali uetsi ipan temej ijtik tepetl.	Se ameyali uetsi ipan temej ijtik tepetl.	100.0000
+27	Se tlalkamojtli non motasneki ken se yolotl, inepantla se oloch tlalkamojtli.	"Seki tlalkamojtli uan se motasneki ken se ""yolotl""."	53.2093
+28	Se atoyatl tlen tlachipauak ipan temej.	Se ueyatsintli ika temej tlen ipan tlapajpakaj.	31.3340
+29	Sekimej altepetlakamej uan topilmej kitookaskej akin omomikili. Katej itlanpa se kuauitl uan ik uejka kajki se tepetl ika se ojtli itlajkotia.	Seki altepetlakamej uan topilmej kitookaskej akin omomikili. Katej itlanpa se kuauitl uan ik uejka kajki se tepetl ika se ojtli itlajkotia.	96.9974
+30	Se topiltsi okiski omototonito ipan se tetl.	Se topiltsi okiski omototonito ipan se tetl.	100.0000
+31	Se ateskatl inauak se kali. Se tlakatsintli ika kilitik tlakemitl itlanpa kali.	Se ateskatl inauak se kali. Kiyaualojtok kuajyo.	52.6931
+32	Se kuajyo ika ateskatl. Tlachipajtok.	Ateskatl ika ateskilitl inauak kuajyo.	36.9921
+33	Se siuatsintli ika ichichiltilpil uan iayouilpil motekak ipan se uejkapantik kuauitl.	Se siuatsintli ika itlaken xochijyo itlanpa se aueuetl uejkapantik.	47.1718
+34	Se tlakatl kipixtok ima se xiuitl ika naui maxiujyo.	Serakilitl, xokok uan uelik ika se tlaxkali.	22.2139
+35	Se xiuitl ika xochitl chichiltik.	"Xiuitl non kiluiaj ""kajkauapajtli"" uan tlapaleuia ijkuak ikaj aminajtok."	9.7077
+36	Ipan se tliltik tepuzcaxitl kajki tlatektli tlilchilli uan xinachtli.	Seki soyonkej chilmej.	12.3828
+37	Se ixtlauaktsintli inauak kuajyo uan tepeyo. Tlamixtentok.	Se gladiolajtooktli inauak se mila. Ik uejka tepeyo uan tlamixtentok.	41.7303
+38	Se mamayotsintli kinextia yankuik xiuitl.	Se mamayotsintli kinextia yankuik xiuitl.	100.0000
+39	"Se kouatl non kiliaj ""palanka"" ipan tlali."	"Se kouatl non kiliaj ""palanka""."	83.6244
+40	Miakej kalmej ipan tepetl.	Miakej kalmej ipan tepetl.	100.0000
+41	Se mantis ipan tlali.	Se mantis ipan tlali.	100.0000
+42	Se tlakatsin ika itlaken tlen tlanextia nemi ipan se ojtli inauak se tlakpakali.	Se tlakatsin non otekipanoto mokopa icha ijkuak yitlayoua ik tepetl.	27.1253
+43	Se buganbiliajxochitl ika xoxoktik xiuitl uan chichiltik xochitl.	Seki buganbiliajxochitl.	52.9799
+44	Se tokatsin ipan se omikilitl.	Se tokatsin ipan se omikilitl.	100.0000
+45	Se pitsauaxochitl non yikin kueponi.	Se pitsauaxochitl non yopejki pitsuaki.	58.7770
+46	Se xochitl tlen matlaltik ika makuili ixochiyo.	"Se xochitl tlen kiluiaj ""pitsauaxochitl""."	45.4961
+47	Se ojtli tlen tlakoloua uan katej seki kalmej uan olochkuauitl tlen okintepankej.	Se ojtli tlen tlakoloua uan katej seki kalmej uan olochkuauitl tlen okintepankej.	100.0000
+48	Se olochkuauitl okintepankej inauak se tepankali.	Miak olochkuauitl okintepankej inauak se tepankali..	82.6595
+49	Se tlakatl ika chichiltik xikoli uan tliliuik pantalon moseuijtok kaltentli, inauak se kuauitl ika xoxoktik xiuitl.	Se tenantsin ika ialtepetlaken kichixtok karro kaltentli, ojtenpa.	30.8532

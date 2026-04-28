@@ -1,0 +1,6 @@
+{
+  "num_examples": 50,
+  "bleu": 0.0,
+  "chrf": 0.0,
+  "chrfpp": 0.0
+}

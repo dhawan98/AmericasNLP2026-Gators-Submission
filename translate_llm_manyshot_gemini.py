@@ -207,7 +207,7 @@ def parse_args() -> argparse.Namespace:
     # ── Model ──
     ap.add_argument("--model", default="gemini-2.5-flash",
                     help="Gemini model name.")
-    ap.add_argument("--api-key", default="API",
+    ap.add_argument("--api-key", default="AIzaSyDTRtjAEl_Y51S6spZtYHeOQHQvFasBPdg",
                     help="Gemini API key; falls back to GEMINI_API_KEY or GOOGLE_API_KEY env var.")
     # ── Retrieval ──
     ap.add_argument("--num-retrieval", type=int, default=24,
@@ -235,6 +235,8 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--max-retries", type=int, default=6)
     ap.add_argument("--score-script", default="score_outputs.py")
     ap.add_argument("--sample-count", type=int, default=20)
+    ap.add_argument("--override-system-prompt", default=None,
+                    help="If set, replaces the language config system_prompt entirely.")
     return ap.parse_args()
 
 
@@ -363,6 +365,7 @@ def rerank_candidate_score(es: str, tgt: str, bm25_rank: int) -> float:
     score -= tgt_n.count(",") * 0.35
     score -= es_n.count(";") * 0.5
     score -= tgt_n.count(";") * 0.5
+    score += caption_domain_score(es_n)
 
     return score
 
@@ -400,6 +403,20 @@ def select_retrieved_pairs(
     chosen = [j for _, j in rescored[:num_retrieval]]
     return chosen, [(train_src[j], train_tgt[j]) for j in chosen]
 
+# Visual/concrete vocabulary that signals a caption-style sentence
+VISUAL_HINTS = [
+    "mujer", "hombre", "niño", "niña", "persona", "personas",
+    "ropa", "camisa", "vestido", "sombrero", "lleva", "usa",
+    "mesa", "silla", "casa", "calle", "campo", "agua", "fuego",
+    "rojo", "azul", "verde", "blanco", "negro", "amarillo",
+    "grande", "pequeño", "sostiende", "carga", "cocina", "come",
+    "vende", "trabaja", "camina", "está", "hay", "tiene",
+]
+
+def caption_domain_score(es: str) -> float:
+    """Bonus score for training examples that look like visual captions."""
+    es_lower = es.lower()
+    return sum(0.5 for w in VISUAL_HINTS if w in es_lower)
 
 # ──────────────────────────────────────────────────────────────
 # Gemini API call
@@ -439,10 +456,16 @@ def call_gemini(
             )
 
             text = ""
-            if response.text:
-                text = response.text
-            elif response.candidates:
-                for part in response.candidates[0].content.parts:
+            try:
+                if response.text:
+                    text = response.text
+            except Exception:
+                pass
+            if not text and response.candidates:
+                for part in (response.candidates[0].content.parts or []):
+                    # skip thought/reasoning parts, only take final answer
+                    if hasattr(part, "thought") and part.thought:
+                        continue
                     if hasattr(part, "text") and part.text:
                         text += part.text
 
@@ -537,7 +560,7 @@ def main() -> None:
     lang_name    = cfg["name"]
     tgt_label    = cfg["tgt_label"]
     clean_prefix = cfg["clean_prefix"]
-    system_prompt = cfg["system_prompt"]
+    system_prompt = args.override_system_prompt if args.override_system_prompt else cfg["system_prompt"]
 
     print("=" * 60)
     print(f"Gemini Many-Shot Translation  —  Spanish → {lang_name}")

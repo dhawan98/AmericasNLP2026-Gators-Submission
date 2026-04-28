@@ -12,11 +12,11 @@ System submitted by **Team Gators** to the [AmericasNLP 2026 Shared Task](https:
 
 | Language | Config | Dev chrF++ | Test Examples |
 |----------|--------|-----------|---------------|
-| Guaraní (grn) | r=80, d=49 | **41.48** | 101 |
+| Guaraní (grn) | r=80, d=49 | **48.24** | 101 |
 | Maya (yua) | r=0, d=49 | **26.29** | 212 |
 | Nahuatl (nlv) | r=40, d=20 | **25.67** | 200 |
 | Wixarika (hch) | r=40, d=20 | **18.99** | 201 |
-| Bribri (bzd) | r=80, d=20 | **11.50** | 267 |
+| Bribri (bzd) | r=80, d=20 | **19.99** | 267 |
 
 ---
 
