@@ -207,7 +207,7 @@ def parse_args() -> argparse.Namespace:
     # ── Model ──
     ap.add_argument("--model", default="gemini-2.5-flash",
                     help="Gemini model name.")
-    ap.add_argument("--api-key", default="AIzaSyDTRtjAEl_Y51S6spZtYHeOQHQvFasBPdg",
+    ap.add_argument("--api-key", default="",
                     help="Gemini API key; falls back to GEMINI_API_KEY or GOOGLE_API_KEY env var.")
     # ── Retrieval ──
     ap.add_argument("--num-retrieval", type=int, default=24,
